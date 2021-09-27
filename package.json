@@ -15,7 +15,11 @@
     "clean": "gatsby clean"
   },
   "dependencies": {
+    "axios": "^0.21.4",
     "babel-plugin-styled-components": "^1.13.2",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "gatsby": "^3.13.1",
     "gatsby-plugin-image": "^1.14.0",
     "gatsby-plugin-page-creator": "^3.14.0",
