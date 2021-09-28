@@ -1,12 +1,12 @@
 import { FlexWrapper } from "components";
 import React from "react";
-import WeatherCard from "../elements/WeatherCard";
+import Calendar from "../elements/Calendar";
 
 const MainContent = () => {
   return (
     <>
       <FlexWrapper backgroundColor="#F5F6FA">
-        <WeatherCard />
+        <Calendar />
       </FlexWrapper>
     </>
   );

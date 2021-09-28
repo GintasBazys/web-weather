@@ -13,24 +13,26 @@ import total_precitipation from "assets/icons/total_precitipation.svg";
 import wind_direction from "assets/icons/wind_direction.svg";
 import wind_gust from "assets/icons/wind_gust.svg";
 import wind_speed from "assets/icons/wind_speed.svg";
+import search_icon from "assets/icons/search_icon.svg";
 
 export const icons: Record<
   string,
   React.FunctionComponent<React.SVGProps<SVGSVGElement>>
 > = {
-  sleet,
-  clear,
-  cloud_cover,
-  heavy_rain,
-  isolated_clouds,
-  light_rain,
-  moderate_rain,
-  moderate_snow,
-  overcast,
-  scattered_clouds,
-  sea_level_pressure,
-  total_precitipation,
-  wind_direction,
-  wind_gust,
-  wind_speed,
+  sleet: sleet,
+  clear: clear,
+  "cloud-cover": cloud_cover,
+  "heavy-rain": heavy_rain,
+  "isolated-clouds": isolated_clouds,
+  "light-rain": light_rain,
+  "moderate-rain": moderate_rain,
+  "moderate-snow": moderate_snow,
+  overcast: overcast,
+  "scattered-clouds": scattered_clouds,
+  "sea-level-pressure": sea_level_pressure,
+  "totla-precitipation": total_precitipation,
+  "wind-direction": wind_direction,
+  "wind-gust": wind_gust,
+  "wind-speed": wind_speed,
+  search_icon,
 };
