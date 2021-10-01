@@ -6,6 +6,7 @@ interface Props {
   alignItems?: string;
   justifyItems?: string;
   margin?: string;
+  backgroundColor?: string;
 }
 
 export const GridWrapper = styled.div<Props>`
@@ -15,4 +16,5 @@ export const GridWrapper = styled.div<Props>`
   align-items: ${({ alignItems }) => alignItems || ""};
   justify-items: ${({ justifyItems }) => justifyItems || ""};
   margin: ${({ margin }) => margin || ""};
+  background-color: ${({ backgroundColor }) => backgroundColor || ""};
 `;

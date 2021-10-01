@@ -8,6 +8,7 @@ interface Styles {
   margin?: string;
   wrap?: string;
   backgroundColor?: string;
+  height?: string;
 }
 
 export const FlexWrapper = styled.div<Styles>`
@@ -19,4 +20,5 @@ export const FlexWrapper = styled.div<Styles>`
   padding: ${({ padding }) => padding || ""};
   flex-wrap: ${({ wrap }) => wrap || ""};
   background-color: ${({ backgroundColor }) => backgroundColor || ""};
+  height: ${({ height }) => height || ""};
 `;

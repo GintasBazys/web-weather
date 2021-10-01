@@ -1,4 +1,5 @@
 import { FlexWrapper, GridWrapper } from "components";
+import { TextWrapper } from "components/wrappers/TextWrapper";
 import React, { useEffect, useState } from "react";
 import { TIMES, TIMES_TEXT } from "utils/times";
 import WeatherCard from "./WeatherCard";
@@ -13,11 +14,13 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
   const [selectedKey, setSelectedKey] = useState<String>("");
 
   useEffect(() => {
-    const filteredData = forecastData,
-      filtered = filteredData.filter((data) =>
-        TIMES.includes(data.forecastTimeUtc.split(" ").pop())
-      );
-    setCalendarTimes(filtered);
+    const filteredData = forecastData.filter((data) =>
+      TIMES.includes(data.forecastTimeUtc.split(" ").pop())
+    );
+    setCalendarTimes(filteredData);
+    if (calendarTimes !== undefined) {
+      setSelectedKey(calendarTimes[0]?.forecastTimeUtc);
+    }
   }, [forecastData]);
 
   const handleSelect = (index: any, selectedKey: any) => {
@@ -28,9 +31,17 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
   return (
     <>
       <FlexWrapper flexDirection="column">
-        <GridWrapper columns={6}>
+        <GridWrapper backgroundColor="#FFFFFF" gap="0" columns={6}>
           {TIMES_TEXT.map((time) => (
-            <div>{time}</div>
+            <div style={{ border: "1px solid #E8E8E8" }}>
+              <FlexWrapper
+                justifyContent="center"
+                alignItems="center"
+                margin="47px 78px"
+              >
+                <TextWrapper>{time}</TextWrapper>
+              </FlexWrapper>
+            </div>
           ))}
         </GridWrapper>
         <FlexWrapper>

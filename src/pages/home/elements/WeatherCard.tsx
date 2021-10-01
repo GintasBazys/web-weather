@@ -9,8 +9,6 @@ interface Props {
 }
 
 const WeatherCard: React.FC<Props> = ({ data, onClick, isSelected }) => {
-  console.log(isSelected);
-
   return (
     <FlexWrapper onClick={onClick}>
       <TextWrapper>{data.airTemperature}</TextWrapper>

@@ -1,5 +1,5 @@
 import { FlexWrapper, Svg } from "components";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
@@ -11,22 +11,11 @@ const Calendar = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [forecastData, setForecastData] = useState([]);
 
-  useEffect(() => {
-    // axios
-    //   .post("http://www.localhost:3000/weather", {
-    //     location: searchInput,
-    //   })
-    //   .then((r) => {
-    //     setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
-    //   });
-  }, []);
-
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
   };
-
+  //TODO move to forecast card
   const showCalendar = () => {
-    setIsQueryShown(true);
     axios
       .post("http://www.localhost:3000/weather", {
         location: searchInput,
@@ -34,17 +23,17 @@ const Calendar = () => {
       .then((r) => {
         setForecastData(r.data.weather_data.forecastTimestamps);
         setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
-      });
+      })
+      .then(() => setIsQueryShown(true));
   };
 
   const getCurrentWeather = (childData: any) => {
     setCurrentWeather(childData);
   };
 
-  const handleKeyPress = (event) => {
+  const handleKeyPress = (event: { key: string }) => {
     console.log(event.key);
     if (event.key === "Enter") {
-      console.log("test");
       showCalendar();
     }
   };
@@ -56,9 +45,13 @@ const Calendar = () => {
         <SearchStyle>
           <Svg onClick={showCalendar} src="search_icon" />
         </SearchStyle>
-        {isQueryShown ? <WeatherInfo currentWeather={currentWeather} /> : ""}
+        {isQueryShown && forecastData ? (
+          <WeatherInfo currentWeather={currentWeather} />
+        ) : (
+          ""
+        )}
       </CardContainer>
-      {isQueryShown ? (
+      {isQueryShown && forecastData ? (
         <ForecastCard
           getCurrentWeather={getCurrentWeather}
           forecastData={forecastData}
