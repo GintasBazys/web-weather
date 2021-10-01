@@ -33,13 +33,26 @@ const Calendar = () => {
       })
       .then((r) => {
         setForecastData(r.data.weather_data.forecastTimestamps);
+        setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
       });
   };
 
+  const getCurrentWeather = (childData: any) => {
+    setCurrentWeather(childData);
+  };
+
+  const handleKeyPress = (event) => {
+    console.log(event.key);
+    if (event.key === "Enter") {
+      console.log("test");
+      showCalendar();
+    }
+  };
+
   return (
-    <FlexWrapper>
+    <FlexWrapper flexDirection="row">
       <CardContainer>
-        <Input onChange={handleSearch} />
+        <Input onKeyPress={handleKeyPress} onChange={handleSearch} />
         <SearchStyle>
           <Svg onClick={showCalendar} src="search_icon" />
         </SearchStyle>
@@ -47,7 +60,7 @@ const Calendar = () => {
       </CardContainer>
       {isQueryShown ? (
         <ForecastCard
-          setCurrentWeather={setCurrentWeather}
+          getCurrentWeather={getCurrentWeather}
           forecastData={forecastData}
         />
       ) : (
