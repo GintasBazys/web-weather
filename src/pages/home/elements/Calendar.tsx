@@ -2,35 +2,57 @@ import { FlexWrapper, Svg } from "components";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
+import WeatherInfo from "./WeatherInfo";
+import ForecastCard from "./ForecastCard";
 
 const Calendar = () => {
   const [currentWeather, setCurrentWeather] = useState<any>({});
   const [isQueryShown, setIsQueryShown] = useState<boolean>(false);
+  const [searchInput, setSearchInput] = useState<string>("");
+  const [forecastData, setForecastData] = useState([]);
 
   useEffect(() => {
-    axios
-      .post("http://www.localhost:3000/weather", {
-        location: "vilnius",
-      })
-      .then((r) => {
-        setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
-      });
+    // axios
+    //   .post("http://www.localhost:3000/weather", {
+    //     location: searchInput,
+    //   })
+    //   .then((r) => {
+    //     setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
+    //   });
   }, []);
 
-  const handleSearch = () => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(event.target.value);
+  };
+
+  const showCalendar = () => {
     setIsQueryShown(true);
-    console.log("text");
+    axios
+      .post("http://www.localhost:3000/weather", {
+        location: searchInput,
+      })
+      .then((r) => {
+        setForecastData(r.data.weather_data.forecastTimestamps);
+      });
   };
 
   return (
     <FlexWrapper>
       <CardContainer>
-        <Input />
+        <Input onChange={handleSearch} />
         <SearchStyle>
-          <Svg onClick={handleSearch} src="search_icon" />
+          <Svg onClick={showCalendar} src="search_icon" />
         </SearchStyle>
+        {isQueryShown ? <WeatherInfo currentWeather={currentWeather} /> : ""}
       </CardContainer>
-      {isQueryShown ? <div>dsd</div> : ""}
+      {isQueryShown ? (
+        <ForecastCard
+          setCurrentWeather={setCurrentWeather}
+          forecastData={forecastData}
+        />
+      ) : (
+        ""
+      )}
     </FlexWrapper>
   );
 };

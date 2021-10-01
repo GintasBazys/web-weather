@@ -12,6 +12,7 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 app.post("/weather", async (req, res) => {
+  console.log(req.body.location);
   await axios
     .get(
       `https://api.meteo.lt/v1/places/${req.body.location}/forecasts/long-term`,
