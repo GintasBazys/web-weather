@@ -1,7 +1,8 @@
-import { FlexWrapper, Svg } from "components";
+import { FlexWrapper } from "components";
 import { TextWrapper } from "components/wrappers/TextWrapper";
 import React from "react";
 import styled from "styled-components";
+import { blue, white } from "utils/colors";
 
 const Header = () => {
   return (
@@ -9,10 +10,10 @@ const Header = () => {
       <FlexWrapper>
         <HeaderContainer>
           <TextWrapper
-            margin="33px 52px 51px"
+            margin="2.063rem 3.25rem 3.188rem"
             fontWeight="900"
             fontSize="2.188rem"
-            color="#5FA6F1"
+            color={blue}
           >
             weather
           </TextWrapper>
@@ -26,5 +27,5 @@ export default Header;
 
 const HeaderContainer = styled.div`
   height: 111px;
-  background: #ffffff 0% 0% no-repeat padding-box;
+  background: ${white} 0% 0% no-repeat padding-box;
 `;

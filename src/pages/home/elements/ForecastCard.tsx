@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { TIMES_TEXT } from "utils/times";
 import WeatherCard from "./WeatherCard";
 import styled from "styled-components";
+import { blue, grey, lightWhite, white } from "utils/colors";
 
 interface Props {
   forecastData: any;
@@ -36,43 +37,48 @@ const ForecastCard: React.FC<Props> = ({
   return (
     <>
       <FlexWrapper flexDirection="column">
-        <GridWrapper backgroundColor="#FFFFFF" gap="0" columns={6}>
+        <GridWrapper backgroundColor={white} gap="0" columns={6}>
           {TIMES_TEXT.map((time) => (
             <ForecastcardContainer>
               <FlexWrapper
                 justifyContent="center"
                 alignItems="center"
-                margin="47px 78px"
+                margin="2.938rem 4.875rem"
               >
-                <TextWrapper color="#5A5A5A">{time}</TextWrapper>
+                <TextWrapper color={grey}>{time}</TextWrapper>
               </FlexWrapper>
             </ForecastcardContainer>
           ))}
         </GridWrapper>
-        <GridWrapper backgroundColor="#FFFFFF" columns={6} gap="0">
+        <GridWrapper backgroundColor={white} columns={6} gap="0">
           {calendarTimes.length > 0 &&
-            calendarTimes.map((data, index) => (
-              <div style={{ border: "1px solid #E8E8E8" }}>
+            calendarTimes.map((data: { forecastTimeUtc: string }, index) => (
+              <CalendarBox>
                 <FlexWrapper
                   justifyContent="center"
                   alignItems="center"
-                  margin="47px 78px"
+                  margin="2.938rem 4.875rem"
+                  cursor="pointer"
+                  position="relative"
                 >
                   <WeatherCard
                     data={data}
                     key={data.forecastTimeUtc}
                     isSelected={selectedKey === data.forecastTimeUtc}
                     onClick={() => handleSelect(index, data.forecastTimeUtc)}
+                    isWeatherNow={
+                      data.forecastTimeUtc === calendarTimes[0].forecastTimeUtc
+                    }
                   />
                 </FlexWrapper>
                 {selectedKey === data.forecastTimeUtc ? (
-                  <FlexWrapper alignItems="left">
+                  <FlexWrapper>
                     <SelectedRectangle></SelectedRectangle>
                   </FlexWrapper>
                 ) : (
                   ""
                 )}
-              </div>
+              </CalendarBox>
             ))}
         </GridWrapper>
       </FlexWrapper>
@@ -82,17 +88,21 @@ const ForecastCard: React.FC<Props> = ({
 export default ForecastCard;
 
 const ForecastcardContainer = styled.div`
-  border: 1px solid #e8e8e8;
+  border: 1px solid ${lightWhite};
   &:first-child {
-    border-top-left-radius: 20px;
+    border-top-left-radius: 1.25rem;
   }
   &:last-child {
-    border-top-right-radius: 20px;
+    border-top-right-radius: 1.25rem;
   }
 `;
 
 const SelectedRectangle = styled.div`
-  background: #5fa6f1;
-  height: 10px;
+  background: ${blue};
+  height: 0.625rem;
   width: 100%;
+`;
+
+const CalendarBox = styled.div`
+  border: 0.063rem solid ${lightWhite};
 `;

@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./sections/Header";
-import MainContent from "./sections/WeatherCalanedarContent";
+import MainContent from "./sections/WeatherCalandarContent";
 
 const Landing = () => {
   return (

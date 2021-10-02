@@ -9,6 +9,8 @@ interface Styles {
   wrap?: string;
   backgroundColor?: string;
   height?: string;
+  cursor?: string;
+  position?: string;
 }
 
 export const FlexWrapper = styled.div<Styles>`
@@ -21,4 +23,6 @@ export const FlexWrapper = styled.div<Styles>`
   flex-wrap: ${({ wrap }) => wrap || ""};
   background-color: ${({ backgroundColor }) => backgroundColor || ""};
   height: ${({ height }) => height || ""};
+  cursor: ${({ cursor }) => cursor || ""};
+  position: ${({ position }) => position || ""};
 `;

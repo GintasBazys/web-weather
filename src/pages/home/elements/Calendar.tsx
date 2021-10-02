@@ -4,6 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
 import ForecastCard from "./ForecastCard";
+import { blue, white } from "utils/colors";
 
 const Calendar = () => {
   const [currentWeather, setCurrentWeather] = useState<any>({});
@@ -67,32 +68,32 @@ const Calendar = () => {
 export default Calendar;
 
 const CardContainer = styled.div`
-  height: 654px;
-  background: #5fa6f1 0% 0% no-repeat padding-box;
-  width: 374px;
-  border-radius: 16px;
-  margin: 31px 44px 0;
+  height: 40.875rem;
+  background: ${blue} 0% 0% no-repeat padding-box;
+  width: 23.375rem;
+  border-radius: 1rem;
+  margin: 1.938rem 2.75rem 0;
 `;
 
 const SearchStyle = styled.span`
   filter: invert(58%) sepia(49%) saturate(545%) hue-rotate(172deg)
     brightness(98%) contrast(93%);
   position: absolute;
-  top: 180px;
-  left: 360px;
+  top: 11.25rem;
+  left: 22.5rem;
 `;
 
 const Input = styled.input.attrs({
   type: "text",
 })`
-  width: 330px;
-  height: 38px;
-  background: white;
-  border-radius: 20px;
+  width: 20.625rem;
+  height: 2.375rem;
+  background: ${white};
+  border-radius: 1.25rem;
   border: none;
-  margin: 28px 25px 0 19px;
+  margin: 1.75rem 1.563rem 0 1.188rem;
   position: relative;
-  padding: 16px 16px;
+  padding: 1rem 1rem;
   :focus {
     outline-width: 0;
   }
