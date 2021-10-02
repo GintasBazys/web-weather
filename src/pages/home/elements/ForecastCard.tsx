@@ -1,7 +1,7 @@
 import { FlexWrapper, GridWrapper } from "components";
 import { TextWrapper } from "components/wrappers/TextWrapper";
 import React, { useEffect, useState } from "react";
-import { TIMES_TEXT } from "utils/times";
+import { DAYS, TIMES_TEXT } from "utils/times";
 import WeatherCard from "./WeatherCard";
 import styled from "styled-components";
 import { blue, grey, lightWhite, white } from "utils/colors";
@@ -33,54 +33,85 @@ const ForecastCard: React.FC<Props> = ({
     getCurrentWeather(calendarTimes[index]);
     setSelectedKey(selectedKey);
   };
+  //Dynamic days array
+  useEffect(() => {
+    const thisDay = new Date();
+    const daysArray = [];
+    for (let i = 1; i < 7; i++) {
+      thisDay.setDate(thisDay.getDate() + i);
+      daysArray.push(thisDay.getDay());
+    }
+    setDaysArray(daysArray);
+  }, [forecastData]);
+
+  const [daysArray, setDaysArray] = useState<Array<number>>([]);
 
   return (
     <>
-      <FlexWrapper flexDirection="column">
-        <GridWrapper backgroundColor={white} gap="0" columns={6}>
-          {TIMES_TEXT.map((time) => (
-            <ForecastcardContainer>
-              <FlexWrapper
-                justifyContent="center"
-                alignItems="center"
-                margin="2.938rem 4.875rem"
-              >
-                <TextWrapper color={grey}>{time}</TextWrapper>
-              </FlexWrapper>
-            </ForecastcardContainer>
-          ))}
-        </GridWrapper>
-        <GridWrapper backgroundColor={white} columns={6} gap="0">
-          {calendarTimes.length > 0 &&
-            calendarTimes.map((data: { forecastTimeUtc: string }, index) => (
-              <CalendarBox>
+      <FlexWrapper flexDirection="row">
+        <FlexWrapper flexDirection="column">
+          <div style={{ marginTop: "12rem" }}>
+            <TextWrapper fontSize="15px" color={grey}>
+              Today
+            </TextWrapper>
+          </div>
+          {daysArray.map((day) => {
+            return (
+              <div style={{ marginTop: "11.8rem" }}>
+                <TextWrapper fontSize="15px" color={grey}>
+                  {DAYS[day]}
+                </TextWrapper>
+              </div>
+            );
+          })}
+        </FlexWrapper>
+        <FlexWrapper flexDirection="column">
+          <GridWrapper backgroundColor={white} gap="0" columns={6}>
+            {TIMES_TEXT.map((time) => (
+              <ForecastcardContainer>
                 <FlexWrapper
                   justifyContent="center"
                   alignItems="center"
                   margin="2.938rem 4.875rem"
-                  cursor="pointer"
-                  position="relative"
                 >
-                  <WeatherCard
-                    data={data}
-                    key={data.forecastTimeUtc}
-                    isSelected={selectedKey === data.forecastTimeUtc}
-                    onClick={() => handleSelect(index, data.forecastTimeUtc)}
-                    isWeatherNow={
-                      data.forecastTimeUtc === calendarTimes[0].forecastTimeUtc
-                    }
-                  />
+                  <TextWrapper color={grey}>{time}</TextWrapper>
                 </FlexWrapper>
-                {selectedKey === data.forecastTimeUtc ? (
-                  <FlexWrapper>
-                    <SelectedRectangle></SelectedRectangle>
-                  </FlexWrapper>
-                ) : (
-                  ""
-                )}
-              </CalendarBox>
+              </ForecastcardContainer>
             ))}
-        </GridWrapper>
+          </GridWrapper>
+          <GridWrapper backgroundColor={white} columns={6} gap="0">
+            {calendarTimes.length > 0 &&
+              calendarTimes.map((data: { forecastTimeUtc: string }, index) => (
+                <CalendarBox>
+                  <FlexWrapper
+                    justifyContent="center"
+                    alignItems="center"
+                    margin="2.938rem 4.875rem"
+                    cursor="pointer"
+                    position="relative"
+                  >
+                    <WeatherCard
+                      data={data}
+                      key={data.forecastTimeUtc}
+                      isSelected={selectedKey === data.forecastTimeUtc}
+                      onClick={() => handleSelect(index, data.forecastTimeUtc)}
+                      isWeatherNow={
+                        data.forecastTimeUtc ===
+                        calendarTimes[0].forecastTimeUtc
+                      }
+                    />
+                  </FlexWrapper>
+                  {selectedKey === data.forecastTimeUtc ? (
+                    <FlexWrapper>
+                      <SelectedRectangle></SelectedRectangle>
+                    </FlexWrapper>
+                  ) : (
+                    ""
+                  )}
+                </CalendarBox>
+              ))}
+          </GridWrapper>
+        </FlexWrapper>
       </FlexWrapper>
     </>
   );

@@ -5,16 +5,27 @@ import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
 import ForecastCard from "./ForecastCard";
 import { blue, white } from "utils/colors";
+import { CITIES } from "utils/cities";
+import SuggestionList from "./SuggestionList";
 
 const Calendar = () => {
   const [currentWeather, setCurrentWeather] = useState<any>({});
   const [isQueryShown, setIsQueryShown] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState<string>("");
   const [forecastData, setForecastData] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
+    const suggestionArray: Array<string> = [];
+    if (event.target.value !== "") {
+      CITIES.map((city) => {
+        city.includes(event.target.value) ? suggestionArray.push(city) : "";
+      });
+    }
+    setSuggestions(suggestionArray);
   };
+  //console.log(suggestions);
   const showCalendar = () => {
     axios
       .post("http://www.localhost:3000/weather", {
@@ -25,12 +36,16 @@ const Calendar = () => {
         setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
       })
       .then(() => setIsQueryShown(true));
-    console.log(currentWeather.forecastTimeUtc);
     return;
   };
 
   const getCurrentWeather = (childData: any) => {
     setCurrentWeather(childData);
+  };
+
+  const getCurrentSuggestions = (childData: string) => {
+    setSearchInput(childData);
+    setSuggestions([]);
   };
 
   const handleKeyPress = (event: { key: string }) => {
@@ -42,12 +57,29 @@ const Calendar = () => {
   return (
     <FlexWrapper flexDirection="row">
       <CardContainer>
-        <Input onKeyPress={handleKeyPress} onChange={handleSearch} />
+        <Input
+          value={searchInput}
+          onKeyPress={handleKeyPress}
+          onChange={handleSearch}
+        />
+        {suggestions.length > 0 ? (
+          <SuggestionList
+            getCurrentSuggestions={getCurrentSuggestions}
+            suggestions={suggestions}
+          />
+        ) : (
+          ""
+        )}
         <SearchStyle>
-          <Image src="search_icon" />
+          <Image src="search_icon" onClick={showCalendar} />
         </SearchStyle>
         {isQueryShown && currentWeather.forecastTimeUtc !== undefined ? (
-          <WeatherInfo currentWeather={currentWeather} />
+          <WeatherInfo
+            currentWeather={currentWeather}
+            isNow={
+              currentWeather.forecastTimeUtc === forecastData[0].forecastTimeUtc
+            } //TODO forecastData[0].forecastTimeUtc to current time weather without using [0]
+          />
         ) : (
           ""
         )}
@@ -97,4 +129,5 @@ const Input = styled.input.attrs({
   :focus {
     outline-width: 0;
   }
+  z-index: 0;
 `;

@@ -5,13 +5,11 @@ import { TextWrapper } from "components/wrappers/TextWrapper";
 import { DAYS } from "utils/times";
 import { white } from "utils/colors";
 
-const WeatherInfo = ({ currentWeather }: any) => {
+const WeatherInfo = ({ currentWeather, isNow }: any) => {
   const dateAndTime = currentWeather.forecastTimeUtc.split(" ");
 
   const day = new Date(dateAndTime[0]).getDay();
-
-  console.log(day);
-
+  console.log(isNow);
   return (
     <>
       <TemperatureBlock>
@@ -30,13 +28,31 @@ const WeatherInfo = ({ currentWeather }: any) => {
             </TextWrapper>
           </FlexWrapper>
         </FlexWrapper>
-        <TextWrapper fontSize="1.563rem" color={white}>
-          {/* Now it's {currentWeather.conditionCode} */}
-          {DAYS[day]}
-        </TextWrapper>
-        <TextWrapper fontSize="1.563rem" color={white}>
-          {dateAndTime[1].substring(0, 5)} - {currentWeather.conditionCode}
-        </TextWrapper>
+
+        {isNow ? (
+          <div>
+            {" "}
+            <TextWrapper fontSize="1.563rem" color={white}>
+              Now it's {currentWeather.conditionCode}
+            </TextWrapper>
+          </div>
+        ) : day === new Date().getDay() ? (
+          <div>
+            <TextWrapper fontSize="1.563rem" color={white}>
+              {dateAndTime[1].substring(0, 5)} {currentWeather.conditionCode}
+            </TextWrapper>
+          </div>
+        ) : (
+          <div>
+            <TextWrapper fontSize="1.563rem" color={white}>
+              {/* Now it's {currentWeather.conditionCode} */}
+              {DAYS[day]}
+            </TextWrapper>
+            <TextWrapper fontSize="1.563rem" color={white}>
+              {dateAndTime[1].substring(0, 5)} {currentWeather.conditionCode}
+            </TextWrapper>
+          </div>
+        )}
       </TemperatureBlock>
       <WeatherInfoBlock>
         <FlexWrapper flexDirection="column">
@@ -52,7 +68,7 @@ const WeatherInfo = ({ currentWeather }: any) => {
               Wind gust: {currentWeather.windGust}ms
             </TextWrapper>
           </GridWrapper>
-          <GridWrapper columns={2} margin="0 0 rem 0">
+          <GridWrapper columns={2} margin="0 0 1rem 0">
             <Image src="wind-direction" />
             <TextWrapper color={white} margin="0 0 0 -7.5rem">
               Wind direction: {currentWeather.windDirection}
