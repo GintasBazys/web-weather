@@ -26,10 +26,7 @@ import wind_speed from "assets/icons/wind_speed.svg";
 import search_icon from "assets/icons/search_icon.svg";
 import cloud_cover from "assets/icons/cloud_cover.svg";
 
-export const icons: Record<
-  string,
-  React.FunctionComponent<React.SVGProps<SVGSVGElement>>
-> = {
+export const images: Record<string, string> = {
   sleet: sleet,
   clear: clear,
   "heavy-rain": heavy_rain,

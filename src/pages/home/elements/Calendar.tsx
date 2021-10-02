@@ -1,4 +1,4 @@
-import { FlexWrapper, Svg } from "components";
+import { FlexWrapper, Image } from "components";
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
@@ -14,7 +14,6 @@ const Calendar = () => {
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
   };
-  //TODO move to forecast card
   const showCalendar = () => {
     axios
       .post("http://www.localhost:3000/weather", {
@@ -25,6 +24,8 @@ const Calendar = () => {
         setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
       })
       .then(() => setIsQueryShown(true));
+    console.log(currentWeather.forecastTimeUtc);
+    return;
   };
 
   const getCurrentWeather = (childData: any) => {
@@ -32,7 +33,6 @@ const Calendar = () => {
   };
 
   const handleKeyPress = (event: { key: string }) => {
-    console.log(event.key);
     if (event.key === "Enter") {
       showCalendar();
     }
@@ -43,18 +43,19 @@ const Calendar = () => {
       <CardContainer>
         <Input onKeyPress={handleKeyPress} onChange={handleSearch} />
         <SearchStyle>
-          <Svg onClick={showCalendar} src="search_icon" />
+          <Image src="search_icon" />
         </SearchStyle>
-        {isQueryShown && forecastData ? (
+        {isQueryShown && currentWeather.forecastTimeUtc !== undefined ? (
           <WeatherInfo currentWeather={currentWeather} />
         ) : (
           ""
         )}
       </CardContainer>
-      {isQueryShown && forecastData ? (
+      {isQueryShown && currentWeather.forecastTimeUtc !== undefined ? (
         <ForecastCard
           getCurrentWeather={getCurrentWeather}
           forecastData={forecastData}
+          currentWeather={currentWeather.forecastTimeUtc}
         />
       ) : (
         ""
