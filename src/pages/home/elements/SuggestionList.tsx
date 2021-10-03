@@ -5,7 +5,7 @@ import { white } from "utils/colors";
 
 interface Props {
   suggestions: any;
-  getCurrentSuggestions: () => void;
+  getCurrentSuggestions: (suggestion: string) => void;
 }
 
 const SuggestionList: React.FC<Props> = ({
@@ -14,7 +14,7 @@ const SuggestionList: React.FC<Props> = ({
 }) => {
   return (
     <SuggestionsBlock>
-      {suggestions.slice(0, 6).map((suggestion) => {
+      {suggestions.slice(0, 6).map((suggestion: string) => {
         return (
           <SuggestionText>
             <TextWrapper
@@ -34,12 +34,12 @@ export default SuggestionList;
 
 const SuggestionsBlock = styled.div`
   background: ${white};
-  width: 328px;
-  margin: -12px 0 0 20px;
+  width: 20.5rem;
+  margin: -0.75rem 0 0 1.25rem;
   z-index: 1;
   position: absolute;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 1.25rem;
+  border-bottom-left-radius: 1.25rem;
 `;
 const SuggestionText = styled.div`
   cursor: pointer;

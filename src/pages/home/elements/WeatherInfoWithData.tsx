@@ -12,7 +12,12 @@ const WeatherInfoWithData = ({ currentWeather, isNow }: any) => {
       setWeatherType("string");
     } else setWeatherType("object");
   }, [currentWeather]);
+  const dateAndTime =
+    typeof currentWeather === "string"
+      ? "1900-01-01"
+      : currentWeather.forecastTimeUtc.split(" "); //date added to avoid undefined error
 
+  const day = new Date(dateAndTime[0]).getDay();
   if (weatherType === "string") {
     return (
       <>
@@ -23,14 +28,7 @@ const WeatherInfoWithData = ({ currentWeather, isNow }: any) => {
         </FlexWrapper>
       </>
     );
-  }
-  const dateAndTime =
-    typeof currentWeather === "string"
-      ? "1900-01-01"
-      : currentWeather.forecastTimeUtc.split(" "); //date added to avoid undefined error
-
-  const day = new Date(dateAndTime[0]).getDay();
-  if (weatherType !== "string") {
+  } else {
     return (
       <>
         <TemperatureBlock>
@@ -122,9 +120,9 @@ const WeatherInfoWithData = ({ currentWeather, isNow }: any) => {
 export default WeatherInfoWithData;
 
 const TemperatureBlock = styled.div`
-  margin: 38px 46px 45px 61px;
+  margin: 2.375rem 2.875rem 2.813rem 3.813rem;
 `;
 
 const WeatherInfoBlock = styled.div`
-  margin: 0 0 0 60px;
+  margin: 0 0 0 3.75rem;
 `;

@@ -12,60 +12,60 @@ interface Props {
 }
 
 const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
-  const [calendarTimes, setCalendarTimes] = useState([]);
   const [selectedKey, setSelectedKey] = useState<String>("");
-  useEffect(() => {
-    const filteredData = forecastData;
-    setCalendarTimes(filteredData);
-    setSelectedKey(filteredData[0].forecastTimeUtc);
-  }, [forecastData]);
 
-  const handleSelect = (index: any, selectedKey: any) => {
-    getCurrentWeather(tempDaysArray[index]);
-    setSelectedKey(selectedKey);
+  const [daysArray, setDaysArray] = useState<Array<number>>([]);
+  const [formatedDays, setFormatedDays] = useState<Array<string>>([]);
+  const [fullDaysArray, setFullDaysArray] = useState<Array<string>>([]);
+
+  const handleSelect = (index: number, selectedKey: string) => {
+    getCurrentWeather(fullDaysArray[index]);
+    if (typeof (selectedKey === "string")) {
+      setSelectedKey(selectedKey);
+    } else if (typeof (selectedKey === "object")) {
+      setSelectedKey(selectedKey.forecastTimeUtc);
+    }
   };
   //Dynamic days array
   useEffect(() => {
     const thisDay = new Date();
     const daysArray = [];
     const formatedDays = [];
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 7; i++) {
       thisDay.setDate(thisDay.getDate() + 1);
       daysArray.push(thisDay.getDay());
       formatedDays.push(thisDay.toISOString().split("T")[0]);
     }
-    setDaysArray([new Date().getDay(), ...daysArray]);
+    setDaysArray([new Date().getDay(), ...daysArray]); //Days numbers from 0 to 7
     setFormatedDays([new Date().toISOString().split("T")[0], ...formatedDays]);
+
+    const fullDaysArray: string[] = [];
+
+    const availableTimes = forecastData.filter(
+      (data: { forecastTimeUtc: string }) =>
+        TIMES.includes(data?.forecastTimeUtc?.split(" ").pop())
+    );
+    //Format 2000-00-00 00:00:00
+    formatedDays.map((day) => {
+      TIMES.map((time) => {
+        fullDaysArray.push(`${day} ${time}`);
+      });
+    });
+
+    fullDaysArray.map((t, idx) => {
+      availableTimes.map((value: any) => {
+        if (t.includes(value.forecastTimeUtc)) {
+          fullDaysArray.splice(idx, 1, value);
+        }
+      });
+    });
+
+    setFullDaysArray(fullDaysArray);
   }, [forecastData]);
-
-  const [daysArray, setDaysArray] = useState<Array<number>>([]);
-  const [formatedDays, setFormatedDays] = useState<Array<string>>([]);
-  const [fullDays, setFullDays] = useState([]);
-  const tempDaysArray: string[] = [];
-
-  const test = forecastData.filter(
-    (data: { forecastTimeUtc: string | undefined }) =>
-      TIMES.includes(data?.forecastTimeUtc?.split(" ").pop())
-  );
-
-  formatedDays.map((day) => {
-    TIMES.map((time) => {
-      tempDaysArray.push(`${day} ${time}`);
-    });
-  });
-
-  tempDaysArray.map((t, idx) => {
-    test.map((value: any) => {
-      if (t.includes(value.forecastTimeUtc)) {
-        tempDaysArray.splice(idx, 1, value);
-      }
-    });
-  });
 
   return (
     <>
       <FlexWrapper flexDirection="row">
-        {}
         <FlexWrapper flexDirection="column">
           {daysArray.map((day) => {
             return (
@@ -92,8 +92,8 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
             ))}
           </GridWrapper>
           <GridWrapper backgroundColor={white} columns={6} gap="0">
-            {tempDaysArray.length > 0 &&
-              tempDaysArray.map((data, index) => (
+            {fullDaysArray.length > 0 &&
+              fullDaysArray.map((data, index) => (
                 <CalendarBox>
                   <FlexWrapper
                     justifyContent="center"
@@ -105,12 +105,16 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
                     <WeatherCard
                       data={data}
                       key={data}
-                      isSelected={false}
+                      isSelected={
+                        typeof (data === "object")
+                          ? selectedKey === data.forecastTimeUtc
+                          : selectedKey === data
+                      }
                       onClick={() => handleSelect(index, data)}
                       isWeatherNow={false}
                     />
                   </FlexWrapper>
-                  {selectedKey === "" ? (
+                  {selectedKey === data ? (
                     <FlexWrapper>
                       <SelectedRectangle></SelectedRectangle>
                     </FlexWrapper>
@@ -137,12 +141,12 @@ const ForecastcardContainer = styled.div`
   }
 `;
 
+const CalendarBox = styled.div`
+  border: 0.063rem solid ${lightWhite};
+`;
+
 const SelectedRectangle = styled.div`
   background: ${blue};
   height: 0.625rem;
   width: 100%;
-`;
-
-const CalendarBox = styled.div`
-  border: 0.063rem solid ${lightWhite};
 `;

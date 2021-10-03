@@ -19,15 +19,6 @@ const WeatherCard: React.FC<Props> = ({
   if (typeof data === "string") {
     return (
       <>
-        {isWeatherNow ? (
-          <NowText>
-            <TextWrapper color={blue} fontSize="0.75rem">
-              now
-            </TextWrapper>
-          </NowText>
-        ) : (
-          ""
-        )}
         <FlexWrapper margin="40px 0" flexDirection="column" onClick={onClick}>
           <TextWrapper color={grey}>NA</TextWrapper>
         </FlexWrapper>
@@ -36,16 +27,6 @@ const WeatherCard: React.FC<Props> = ({
   } else {
     return (
       <>
-        {isWeatherNow ? (
-          <NowText>
-            <TextWrapper color={blue} fontSize="0.75rem">
-              now
-            </TextWrapper>
-          </NowText>
-        ) : (
-          ""
-        )}
-
         <FlexWrapper flexDirection="column" onClick={onClick}>
           <FlexWrapper flexDirection="column" justifyContent="center">
             <Image width="2.375rem" height="2.5rem" src={data.conditionCode} />
@@ -83,6 +64,6 @@ const WindDirectionContainer = styled.div`
 
 const NowText = styled.div`
   position: absolute;
-  top: -20px;
-  left: 8px;
+  top: -1.25rem;
+  left: 0.5rem;
 `;

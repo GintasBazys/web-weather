@@ -13,7 +13,7 @@ const Calendar = () => {
   const [isQueryShown, setIsQueryShown] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState<string>("");
   const [forecastData, setForecastData] = useState([]);
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<Array<string>>([]);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
@@ -25,7 +25,7 @@ const Calendar = () => {
     }
     setSuggestions(suggestionArray);
   };
-  //console.log(suggestions);
+
   const showCalendar = () => {
     axios
       .post("http://www.localhost:3000/weather", {

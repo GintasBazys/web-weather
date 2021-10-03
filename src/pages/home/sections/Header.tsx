@@ -26,6 +26,6 @@ const Header = () => {
 export default Header;
 
 const HeaderContainer = styled.div`
-  height: 111px;
+  height: 6.938rem;
   background: ${white} 0% 0% no-repeat padding-box;
 `;
