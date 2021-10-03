@@ -1,7 +1,7 @@
 import { FlexWrapper, GridWrapper } from "components";
 import { TextWrapper } from "components/wrappers/TextWrapper";
 import React, { useEffect, useState } from "react";
-import { DAYS, TIMES_TEXT } from "utils/times";
+import { DAYS, TIMES, TIMES_TEXT } from "utils/times";
 import WeatherCard from "./WeatherCard";
 import styled from "styled-components";
 import { blue, grey, lightWhite, white } from "utils/colors";
@@ -9,55 +9,67 @@ import { blue, grey, lightWhite, white } from "utils/colors";
 interface Props {
   forecastData: any;
   getCurrentWeather: any;
-  currentWeather: any;
 }
 
-const ForecastCard: React.FC<Props> = ({
-  forecastData,
-  getCurrentWeather,
-  currentWeather,
-}) => {
+const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
   const [calendarTimes, setCalendarTimes] = useState([]);
   const [selectedKey, setSelectedKey] = useState<String>("");
   useEffect(() => {
-    // const filteredData = forecastData.filter((data) =>
-    //   TIMES.includes(data.forecastTimeUtc.split(" ").pop())
-    // ); Array should consist of 42 elements - 7 days + siz times shown on each day
-    //try to use splice later to add content - full 24 hours for each day
-    const filteredData = forecastData.slice(0, 42);
+    const filteredData = forecastData;
     setCalendarTimes(filteredData);
     setSelectedKey(filteredData[0].forecastTimeUtc);
   }, [forecastData]);
 
   const handleSelect = (index: any, selectedKey: any) => {
-    getCurrentWeather(calendarTimes[index]);
+    getCurrentWeather(tempDaysArray[index]);
     setSelectedKey(selectedKey);
   };
   //Dynamic days array
   useEffect(() => {
     const thisDay = new Date();
     const daysArray = [];
-    for (let i = 1; i < 7; i++) {
-      thisDay.setDate(thisDay.getDate() + i);
+    const formatedDays = [];
+    for (let i = 0; i < 6; i++) {
+      thisDay.setDate(thisDay.getDate() + 1);
       daysArray.push(thisDay.getDay());
+      formatedDays.push(thisDay.toISOString().split("T")[0]);
     }
-    setDaysArray(daysArray);
+    setDaysArray([new Date().getDay(), ...daysArray]);
+    setFormatedDays([new Date().toISOString().split("T")[0], ...formatedDays]);
   }, [forecastData]);
 
   const [daysArray, setDaysArray] = useState<Array<number>>([]);
+  const [formatedDays, setFormatedDays] = useState<Array<string>>([]);
+  const [fullDays, setFullDays] = useState([]);
+  const tempDaysArray: string[] = [];
+
+  const test = forecastData.filter(
+    (data: { forecastTimeUtc: string | undefined }) =>
+      TIMES.includes(data?.forecastTimeUtc?.split(" ").pop())
+  );
+
+  formatedDays.map((day) => {
+    TIMES.map((time) => {
+      tempDaysArray.push(`${day} ${time}`);
+    });
+  });
+
+  tempDaysArray.map((t, idx) => {
+    test.map((value: any) => {
+      if (t.includes(value.forecastTimeUtc)) {
+        tempDaysArray.splice(idx, 1, value);
+      }
+    });
+  });
 
   return (
     <>
       <FlexWrapper flexDirection="row">
+        {}
         <FlexWrapper flexDirection="column">
-          <div style={{ marginTop: "12rem" }}>
-            <TextWrapper fontSize="15px" color={grey}>
-              Today
-            </TextWrapper>
-          </div>
           {daysArray.map((day) => {
             return (
-              <div style={{ marginTop: "11.8rem" }}>
+              <div style={{ marginTop: "13rem" }}>
                 <TextWrapper fontSize="15px" color={grey}>
                   {DAYS[day]}
                 </TextWrapper>
@@ -80,8 +92,8 @@ const ForecastCard: React.FC<Props> = ({
             ))}
           </GridWrapper>
           <GridWrapper backgroundColor={white} columns={6} gap="0">
-            {calendarTimes.length > 0 &&
-              calendarTimes.map((data: { forecastTimeUtc: string }, index) => (
+            {tempDaysArray.length > 0 &&
+              tempDaysArray.map((data, index) => (
                 <CalendarBox>
                   <FlexWrapper
                     justifyContent="center"
@@ -92,16 +104,13 @@ const ForecastCard: React.FC<Props> = ({
                   >
                     <WeatherCard
                       data={data}
-                      key={data.forecastTimeUtc}
-                      isSelected={selectedKey === data.forecastTimeUtc}
-                      onClick={() => handleSelect(index, data.forecastTimeUtc)}
-                      isWeatherNow={
-                        data.forecastTimeUtc ===
-                        calendarTimes[0].forecastTimeUtc
-                      }
+                      key={data}
+                      isSelected={false}
+                      onClick={() => handleSelect(index, data)}
+                      isWeatherNow={false}
                     />
                   </FlexWrapper>
-                  {selectedKey === data.forecastTimeUtc ? (
+                  {selectedKey === "" ? (
                     <FlexWrapper>
                       <SelectedRectangle></SelectedRectangle>
                     </FlexWrapper>

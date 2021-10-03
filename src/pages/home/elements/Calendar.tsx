@@ -9,7 +9,7 @@ import { CITIES } from "utils/cities";
 import SuggestionList from "./SuggestionList";
 
 const Calendar = () => {
-  const [currentWeather, setCurrentWeather] = useState<any>({});
+  const [currentWeather, setCurrentWeather] = useState<any>(null);
   const [isQueryShown, setIsQueryShown] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState<string>("");
   const [forecastData, setForecastData] = useState([]);
@@ -73,22 +73,16 @@ const Calendar = () => {
         <SearchStyle>
           <Image src="search_icon" onClick={showCalendar} />
         </SearchStyle>
-        {isQueryShown && currentWeather.forecastTimeUtc !== undefined ? (
-          <WeatherInfo
-            currentWeather={currentWeather}
-            isNow={
-              currentWeather.forecastTimeUtc === forecastData[0].forecastTimeUtc
-            } //TODO forecastData[0].forecastTimeUtc to current time weather without using [0]
-          />
+        {isQueryShown ? (
+          <WeatherInfo currentWeather={currentWeather} isNow={false} />
         ) : (
           ""
         )}
       </CardContainer>
-      {isQueryShown && currentWeather.forecastTimeUtc !== undefined ? (
+      {isQueryShown ? (
         <ForecastCard
           getCurrentWeather={getCurrentWeather}
           forecastData={forecastData}
-          currentWeather={currentWeather.forecastTimeUtc}
         />
       ) : (
         ""

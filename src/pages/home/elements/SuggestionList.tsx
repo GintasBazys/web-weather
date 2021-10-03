@@ -19,7 +19,7 @@ const SuggestionList: React.FC<Props> = ({
           <SuggestionText>
             <TextWrapper
               onClick={() => getCurrentSuggestions(suggestion)}
-              margin="8px 8px"
+              margin="0.5rem 0.5rem"
             >
               {suggestion}
             </TextWrapper>
