@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { FlexWrapper, Image } from "components";
+import { FlexWrapper, Image, CardContainer } from "components";
 import styled from "styled-components";
 import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
 import ForecastCard from "./ForecastCard";
-import { blue, white } from "utils/colors";
+import { white, blue } from "utils/colors";
 import { CITIES } from "utils/cities";
 import SuggestionList from "./SuggestionList";
+import { useQuery } from "utils/breakpoints";
 
 const Calendar = () => {
   const [currentWeather, setCurrentWeather] = useState<any>(null);
@@ -14,6 +15,8 @@ const Calendar = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [forecastData, setForecastData] = useState([]);
   const [suggestions, setSuggestions] = useState<Array<string>>([]);
+
+  const { isTablet } = useQuery();
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(event.target.value);
@@ -60,7 +63,13 @@ const Calendar = () => {
 
   return (
     <FlexWrapper flexDirection="row">
-      <CardContainer>
+      <CardContainer
+        height="40.875rem"
+        background={`${blue} 0% 0% no-repeat padding-box`}
+        width={isTablet ? "100vw" : "23.375rem"}
+        borderRadius={isTablet ? "" : "1rem"}
+        margin={isTablet ? "" : "1.938rem 2.75rem 0"}
+      >
         <Input
           value={searchInput}
           onKeyPress={handleKeyPress}
@@ -78,7 +87,12 @@ const Calendar = () => {
           <Image src="search_icon" onClick={showCalendar} />
         </SearchStyle>
         {isQueryShown && currentWeather ? (
-          <WeatherInfo currentWeather={currentWeather} />
+          <WeatherInfo
+            currentWeather={currentWeather}
+            isNow={
+              currentWeather.forecastTimeUtc === forecastData[0].forecastTimeUtc
+            }
+          />
         ) : (
           ""
         )}
@@ -97,19 +111,11 @@ const Calendar = () => {
 
 export default Calendar;
 
-const CardContainer = styled.div`
-  height: 40.875rem;
-  background: ${blue} 0% 0% no-repeat padding-box;
-  width: 23.375rem;
-  border-radius: 1rem;
-  margin: 1.938rem 2.75rem 0;
-`;
-
 const SearchStyle = styled.span`
   filter: invert(58%) sepia(49%) saturate(545%) hue-rotate(172deg)
     brightness(98%) contrast(93%);
   position: absolute;
-  top: 11.25rem;
+  top: 12.5rem;
   left: 22.5rem;
 `;
 

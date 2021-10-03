@@ -1,31 +1,23 @@
 import React from "react";
 import { FlexWrapper, TextWrapper } from "components";
 
-import styled from "styled-components";
 import { blue, white } from "utils/colors";
 
 const Header = () => {
   return (
     <>
-      <FlexWrapper>
-        <HeaderContainer>
-          <TextWrapper
-            margin="2.063rem 3.25rem 3.188rem"
-            fontWeight="900"
-            fontSize="2.188rem"
-            color={blue}
-          >
-            weather
-          </TextWrapper>
-        </HeaderContainer>
+      <FlexWrapper backgroundColor={white}>
+        <TextWrapper
+          margin="2.063rem 3.25rem 3.188rem"
+          fontWeight="900"
+          fontSize="2.188rem"
+          color={blue}
+        >
+          weather
+        </TextWrapper>
       </FlexWrapper>
     </>
   );
 };
 
 export default Header;
-
-const HeaderContainer = styled.div`
-  height: 6.938rem;
-  background: ${white} 0% 0% no-repeat padding-box;
-`;
