@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { FlexWrapper, GridWrapper, Image } from "components";
+import { FlexWrapper, GridWrapper, Image, TextWrapper } from "components";
 import styled from "styled-components";
-import { TextWrapper } from "components/wrappers/TextWrapper";
 import { DAYS } from "utils/times";
 import { white } from "utils/colors";
 

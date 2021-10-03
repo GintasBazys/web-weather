@@ -1,6 +1,5 @@
-import { FlexWrapper, GridWrapper } from "components";
-import { TextWrapper } from "components/wrappers/TextWrapper";
 import React, { useEffect, useState } from "react";
+import { FlexWrapper, GridWrapper, TextWrapper } from "components";
 import { DAYS, MONTHS, TIMES, TIMES_TEXT } from "utils/times";
 import WeatherCard from "./WeatherCard";
 import styled from "styled-components";
@@ -18,7 +17,7 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
   const [monthsArray, setMonthsArray] = useState<Array<number>>([]);
 
   const [fullDaysArray, setFullDaysArray] = useState<Array<string>>([]);
-
+  //Show selected weather card forecast information
   const handleSelect = (
     index: number,
     selectedKey: React.SetStateAction<string>
@@ -37,17 +36,17 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
     const formatedDays = [];
     for (let i = 1; i < 7; i++) {
       thisDay.setDate(thisDay.getDate() + 1);
-      daysArray.push(thisDay.getDay());
-      formatedDays.push(thisDay.toISOString().split("T")[0]);
+      daysArray.push(thisDay.getDay()); //0-7
+      formatedDays.push(thisDay.toISOString().split("T")[0]); //Format 2000-00-00 00:00:00
     }
     formatedDays.unshift(new Date().toISOString().split("T")[0]);
-    setDaysArray([new Date().getDay(), ...daysArray]);
+    setDaysArray([new Date().getDay(), ...daysArray]); //0-7
 
     const fullDaysArray: string[] = [];
 
     const availableTimes = forecastData.filter(
       (data: { forecastTimeUtc: string }) =>
-        TIMES.includes(data?.forecastTimeUtc?.split(" ").pop())
+        TIMES.includes(data?.forecastTimeUtc?.split(" ").pop()) //filter fata that only contains specified time
     );
 
     setMonthsArray([
@@ -55,13 +54,14 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
       new Date(formatedDays.at(-1)).getMonth(),
     ]); //starting date month; last day month
 
-    //Format 2000-00-00 00:00:00
+    //fullDaysArray - all possible week's values
     formatedDays.map((day) => {
       TIMES.map((time) => {
         fullDaysArray.push(`${day} ${time}`);
       });
     });
 
+    //replacing values in arrry using API data
     fullDaysArray.map((t, idx) => {
       availableTimes.map((value: any) => {
         if (t.includes(value.forecastTimeUtc)) {
@@ -70,7 +70,7 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
       });
     });
     setFullDaysArray(fullDaysArray);
-  }, [forecastData, selectedKey]);
+  }, [forecastData]);
 
   return (
     <>
@@ -96,11 +96,12 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
                 return (
                   <div>
                     {idx === 0 ? (
-                      <TextWrapper fontSize="0.938rem" color={grey}>
+                      <TextWrapper key={day} fontSize="0.938rem" color={grey}>
                         Today
                       </TextWrapper>
                     ) : (
                       <TextWrapper
+                        key={day}
                         margin="12rem 0 0"
                         fontSize="0.938rem"
                         color={grey}
@@ -113,11 +114,11 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
               })}
             </FlexWrapper>
           </FlexWrapper>
-
+          {/* TODO move FlexWrapper to a new component */}
           <FlexWrapper margin="0.625rem" flexDirection="column">
             <GridWrapper backgroundColor={white} gap="0" columns={6}>
               {TIMES_TEXT.map((time) => (
-                <ForecastcardContainer>
+                <ForecastcardContainer key={time}>
                   <FlexWrapper
                     justifyContent="center"
                     alignItems="center"

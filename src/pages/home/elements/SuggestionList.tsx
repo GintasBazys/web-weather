@@ -1,10 +1,10 @@
-import { TextWrapper } from "components/wrappers/TextWrapper";
 import React from "react";
+import { TextWrapper } from "components";
 import styled from "styled-components";
 import { white } from "utils/colors";
 
 interface Props {
-  suggestions: any;
+  suggestions: Array<string>;
   getCurrentSuggestions: (suggestion: string) => void;
 }
 
@@ -16,7 +16,7 @@ const SuggestionList: React.FC<Props> = ({
     <SuggestionsBlock>
       {suggestions.slice(0, 6).map((suggestion: string) => {
         return (
-          <SuggestionText>
+          <SuggestionText key={suggestion}>
             <TextWrapper
               onClick={() => getCurrentSuggestions(suggestion)}
               margin="0.5rem 0.5rem"

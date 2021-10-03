@@ -1,5 +1,6 @@
-import { FlexWrapper } from "components";
 import React from "react";
+import { FlexWrapper } from "components";
+
 import { greyBackground } from "utils/colors";
 import Calendar from "../elements/Calendar";
 

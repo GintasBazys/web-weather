@@ -1,6 +1,6 @@
-import { FlexWrapper, Image } from "components";
-import { TextWrapper } from "components/wrappers/TextWrapper";
 import React from "react";
+import { FlexWrapper, Image, TextWrapper } from "components";
+
 import styled from "styled-components";
 import { grey, lightGrey } from "utils/colors";
 interface Props {

@@ -1,6 +1,6 @@
-import { FlexWrapper } from "components";
-import { TextWrapper } from "components/wrappers/TextWrapper";
 import React from "react";
+import { FlexWrapper, TextWrapper } from "components";
+
 import styled from "styled-components";
 import { blue, white } from "utils/colors";
 

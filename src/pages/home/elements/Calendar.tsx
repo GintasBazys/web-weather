@@ -1,5 +1,5 @@
-import { FlexWrapper, Image } from "components";
 import React, { useState } from "react";
+import { FlexWrapper, Image } from "components";
 import styled from "styled-components";
 import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
@@ -43,7 +43,7 @@ const Calendar = () => {
     return;
   };
 
-  const getCurrentWeather = (childData: any) => {
+  const getCurrentWeather = (childData: string) => {
     setCurrentWeather(childData);
   };
 
