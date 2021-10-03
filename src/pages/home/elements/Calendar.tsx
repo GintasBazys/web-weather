@@ -32,10 +32,14 @@ const Calendar = () => {
         location: searchInput,
       })
       .then((r) => {
-        setForecastData(r.data.weather_data.forecastTimestamps);
-        setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
-      })
-      .then(() => setIsQueryShown(true));
+        if (r.data.success) {
+          setForecastData(r.data.weather_data.forecastTimestamps);
+          setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
+          setIsQueryShown(true);
+        } else {
+          alert("No search results");
+        }
+      });
     return;
   };
 
@@ -73,8 +77,8 @@ const Calendar = () => {
         <SearchStyle>
           <Image src="search_icon" onClick={showCalendar} />
         </SearchStyle>
-        {isQueryShown ? (
-          <WeatherInfo currentWeather={currentWeather} isNow={false} />
+        {isQueryShown && currentWeather ? (
+          <WeatherInfo currentWeather={currentWeather} />
         ) : (
           ""
         )}

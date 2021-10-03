@@ -1,10 +1,10 @@
 import { FlexWrapper, GridWrapper } from "components";
 import { TextWrapper } from "components/wrappers/TextWrapper";
 import React, { useEffect, useState } from "react";
-import { DAYS, TIMES, TIMES_TEXT } from "utils/times";
+import { DAYS, MONTHS, TIMES, TIMES_TEXT } from "utils/times";
 import WeatherCard from "./WeatherCard";
 import styled from "styled-components";
-import { blue, grey, lightWhite, white } from "utils/colors";
+import { black, blue, grey, lightWhite, white } from "utils/colors";
 
 interface Props {
   forecastData: any;
@@ -12,13 +12,17 @@ interface Props {
 }
 
 const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
-  const [selectedKey, setSelectedKey] = useState<String>("");
+  const [selectedKey, setSelectedKey] = useState<string>("");
 
   const [daysArray, setDaysArray] = useState<Array<number>>([]);
-  const [formatedDays, setFormatedDays] = useState<Array<string>>([]);
+  const [monthsArray, setMonthsArray] = useState<Array<number>>([]);
+
   const [fullDaysArray, setFullDaysArray] = useState<Array<string>>([]);
 
-  const handleSelect = (index: number, selectedKey: string) => {
+  const handleSelect = (
+    index: number,
+    selectedKey: React.SetStateAction<string>
+  ) => {
     getCurrentWeather(fullDaysArray[index]);
     if (typeof (selectedKey === "string")) {
       setSelectedKey(selectedKey);
@@ -31,13 +35,13 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
     const thisDay = new Date();
     const daysArray = [];
     const formatedDays = [];
-    for (let i = 0; i < 7; i++) {
+    for (let i = 1; i < 7; i++) {
       thisDay.setDate(thisDay.getDate() + 1);
       daysArray.push(thisDay.getDay());
       formatedDays.push(thisDay.toISOString().split("T")[0]);
     }
-    setDaysArray([new Date().getDay(), ...daysArray]); //Days numbers from 0 to 7
-    setFormatedDays([new Date().toISOString().split("T")[0], ...formatedDays]);
+    formatedDays.unshift(new Date().toISOString().split("T")[0]);
+    setDaysArray([new Date().getDay(), ...daysArray]);
 
     const fullDaysArray: string[] = [];
 
@@ -45,6 +49,12 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
       (data: { forecastTimeUtc: string }) =>
         TIMES.includes(data?.forecastTimeUtc?.split(" ").pop())
     );
+
+    setMonthsArray([
+      new Date(formatedDays[0]).getMonth(),
+      new Date(formatedDays.at(-1)).getMonth(),
+    ]); //starting date month; last day month
+
     //Format 2000-00-00 00:00:00
     formatedDays.map((day) => {
       TIMES.map((time) => {
@@ -59,71 +69,100 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
         }
       });
     });
-
     setFullDaysArray(fullDaysArray);
-  }, [forecastData]);
+  }, [forecastData, selectedKey]);
 
   return (
     <>
-      <FlexWrapper flexDirection="row">
-        <FlexWrapper flexDirection="column">
-          {daysArray.map((day) => {
-            return (
-              <div style={{ marginTop: "13rem" }}>
-                <TextWrapper fontSize="15px" color={grey}>
-                  {DAYS[day]}
-                </TextWrapper>
-              </div>
-            );
-          })}
+      <FlexWrapper flexDirection="column">
+        <FlexWrapper margin="0 0 0 5.313rem">
+          {monthsArray[0] === monthsArray[1] ? (
+            <TextWrapper fontWeight="700" color={black} fontSize="2.188rem">
+              {MONTHS[monthsArray[0]]} {new Date().getDate()}-
+              {new Date().getDate() + 7}
+            </TextWrapper>
+          ) : (
+            <TextWrapper fontWeight="700" color={black} fontSize="2.188rem">
+              {MONTHS[monthsArray[0]]}/{MONTHS[monthsArray[1]]}{" "}
+              {new Date().getDate()}-{new Date().getDate() + 7}
+            </TextWrapper>
+          )}
         </FlexWrapper>
-        <FlexWrapper flexDirection="column">
-          <GridWrapper backgroundColor={white} gap="0" columns={6}>
-            {TIMES_TEXT.map((time) => (
-              <ForecastcardContainer>
-                <FlexWrapper
-                  justifyContent="center"
-                  alignItems="center"
-                  margin="2.938rem 4.875rem"
-                >
-                  <TextWrapper color={grey}>{time}</TextWrapper>
-                </FlexWrapper>
-              </ForecastcardContainer>
-            ))}
-          </GridWrapper>
-          <GridWrapper backgroundColor={white} columns={6} gap="0">
-            {fullDaysArray.length > 0 &&
-              fullDaysArray.map((data, index) => (
-                <CalendarBox>
+
+        <FlexWrapper flexDirection="row">
+          <FlexWrapper flexDirection="row">
+            <FlexWrapper margin="13.75rem 0 0" flexDirection="column">
+              {daysArray.slice(0, 7).map((day, idx) => {
+                return (
+                  <div>
+                    {idx === 0 ? (
+                      <TextWrapper fontSize="0.938rem" color={grey}>
+                        Today
+                      </TextWrapper>
+                    ) : (
+                      <TextWrapper
+                        margin="12rem 0 0"
+                        fontSize="0.938rem"
+                        color={grey}
+                      >
+                        {DAYS[day]}
+                      </TextWrapper>
+                    )}
+                  </div>
+                );
+              })}
+            </FlexWrapper>
+          </FlexWrapper>
+
+          <FlexWrapper margin="0.625rem" flexDirection="column">
+            <GridWrapper backgroundColor={white} gap="0" columns={6}>
+              {TIMES_TEXT.map((time) => (
+                <ForecastcardContainer>
                   <FlexWrapper
                     justifyContent="center"
                     alignItems="center"
                     margin="2.938rem 4.875rem"
-                    cursor="pointer"
-                    position="relative"
                   >
-                    <WeatherCard
-                      data={data}
-                      key={data}
-                      isSelected={
-                        typeof (data === "object")
-                          ? selectedKey === data.forecastTimeUtc
-                          : selectedKey === data
-                      }
-                      onClick={() => handleSelect(index, data)}
-                      isWeatherNow={false}
-                    />
+                    <TextWrapper color={grey}>{time}</TextWrapper>
                   </FlexWrapper>
-                  {selectedKey === data ? (
-                    <FlexWrapper>
-                      <SelectedRectangle></SelectedRectangle>
-                    </FlexWrapper>
-                  ) : (
-                    ""
-                  )}
-                </CalendarBox>
+                </ForecastcardContainer>
               ))}
-          </GridWrapper>
+            </GridWrapper>
+            <GridWrapper backgroundColor={white} columns={6} gap="0">
+              {fullDaysArray.length > 0 &&
+                fullDaysArray.map((data, index) => {
+                  return (
+                    <CalendarBox>
+                      <FlexWrapper
+                        justifyContent="center"
+                        alignItems="center"
+                        margin="2.938rem 4.875rem"
+                        cursor="pointer"
+                        position="relative"
+                      >
+                        <WeatherCard
+                          data={data}
+                          key={data}
+                          isSelected={
+                            typeof (data === "object")
+                              ? selectedKey === data.forecastTimeUtc
+                              : selectedKey === data
+                          }
+                          onClick={() => handleSelect(index, data)}
+                        />
+                      </FlexWrapper>
+                      {selectedKey === data ? (
+                        <FlexWrapper>
+                          <SelectedRectangle></SelectedRectangle>
+                        </FlexWrapper>
+                      ) : (
+                        ""
+                      )}
+                    </CalendarBox>
+                  );
+                })}
+            </GridWrapper>
+          </FlexWrapper>
         </FlexWrapper>
       </FlexWrapper>
     </>
@@ -132,7 +171,7 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
 export default ForecastCard;
 
 const ForecastcardContainer = styled.div`
-  border: 1px solid ${lightWhite};
+  border: 0.063rem solid ${lightWhite};
   &:first-child {
     border-top-left-radius: 1.25rem;
   }

@@ -29,6 +29,9 @@ app.post("/weather", async (req, res) => {
       });
     })
     .catch((error) => {
+      res.json({
+        success: false,
+      });
       console.log(error.message);
     });
 });

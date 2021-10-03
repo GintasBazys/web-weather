@@ -5,7 +5,7 @@ import { TextWrapper } from "components/wrappers/TextWrapper";
 import { DAYS } from "utils/times";
 import { white } from "utils/colors";
 
-const WeatherInfoWithData = ({ currentWeather, isNow }: any) => {
+const WeatherInfoWithData = ({ currentWeather }: any) => {
   const [weatherType, setWeatherType] = useState("");
   useEffect(() => {
     if (typeof currentWeather === "string") {
@@ -21,8 +21,8 @@ const WeatherInfoWithData = ({ currentWeather, isNow }: any) => {
   if (weatherType === "string") {
     return (
       <>
-        <FlexWrapper margin="120px 0" justifyContent="center">
-          <TextWrapper margin="40px 0" fontSize="56px" color={white}>
+        <FlexWrapper margin="7.5rem 0" justifyContent="center">
+          <TextWrapper margin="2.5rem 0" fontSize="3.5rem" color={white}>
             NA
           </TextWrapper>
         </FlexWrapper>
@@ -48,14 +48,7 @@ const WeatherInfoWithData = ({ currentWeather, isNow }: any) => {
             </FlexWrapper>
           </FlexWrapper>
 
-          {isNow ? (
-            <div>
-              {" "}
-              <TextWrapper fontSize="1.563rem" color={white}>
-                Now it's {currentWeather.conditionCode}
-              </TextWrapper>
-            </div>
-          ) : day === new Date().getDay() ? (
+          {day === new Date().getDay() ? (
             <div>
               <TextWrapper fontSize="1.563rem" color={white}>
                 {dateAndTime[1].substring(0, 5)} {currentWeather.conditionCode}
@@ -98,13 +91,13 @@ const WeatherInfoWithData = ({ currentWeather, isNow }: any) => {
                 Cloud cover: {currentWeather.cloudCover}%
               </TextWrapper>
             </GridWrapper>
-            <GridWrapper margin="0 0 1rem 0px" columns={2}>
+            <GridWrapper margin="0 0 1rem 0" columns={2}>
               <Image src="sea-level-pressure" />
               <TextWrapper color={white} margin="0 0 0 -7.5rem">
                 Sea level pressure: {currentWeather.seaLevelPressure}
               </TextWrapper>
             </GridWrapper>
-            <GridWrapper margin="0 0 1rem 0px" columns={2}>
+            <GridWrapper margin="0 0 1rem 0" columns={2}>
               <Image src="total-precitipation" />
               <TextWrapper color={white} margin="0 0 0 -7.5rem">
                 Total precitipation: {currentWeather.totalPrecipitation}

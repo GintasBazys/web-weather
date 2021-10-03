@@ -2,24 +2,18 @@ import { FlexWrapper, Image } from "components";
 import { TextWrapper } from "components/wrappers/TextWrapper";
 import React from "react";
 import styled from "styled-components";
-import { blue, grey, lightGrey } from "utils/colors";
+import { grey, lightGrey } from "utils/colors";
 interface Props {
   data: any;
   onClick: () => void;
   isSelected: boolean;
-  isWeatherNow: boolean;
 }
 
-const WeatherCard: React.FC<Props> = ({
-  data,
-  onClick,
-  isSelected,
-  isWeatherNow,
-}) => {
+const WeatherCard: React.FC<Props> = ({ data, onClick, isSelected }) => {
   if (typeof data === "string") {
     return (
       <>
-        <FlexWrapper margin="40px 0" flexDirection="column" onClick={onClick}>
+        <FlexWrapper margin="2.5rem 0" flexDirection="column" onClick={onClick}>
           <TextWrapper color={grey}>NA</TextWrapper>
         </FlexWrapper>
       </>
@@ -60,10 +54,4 @@ const WindDirectionContainer = styled.div`
   filter: invert(65%) sepia(4%) saturate(0%) hue-rotate(261deg) brightness(91%)
     contrast(82%);
   transform: matrix(0.9, -0.44, 0.44, 0.9, 0, 0);
-`;
-
-const NowText = styled.div`
-  position: absolute;
-  top: -1.25rem;
-  left: 0.5rem;
 `;
