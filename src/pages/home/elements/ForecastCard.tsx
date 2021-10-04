@@ -76,7 +76,12 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
   return (
     <>
       {isTablet ? (
-        <WeeklyForecastMobile />
+        <WeeklyForecastMobile
+          selectedKey={selectedKey}
+          handleSelect={handleSelect}
+          fullDaysArray={fullDaysArray}
+          daysArray={daysArray}
+        />
       ) : (
         <WeeklyForecastDesktop
           selectedKey={selectedKey}

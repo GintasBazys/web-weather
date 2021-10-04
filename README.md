@@ -45,7 +45,9 @@
 
     Main content component has initial calendar component.
 
-    Calendar component renders search card and suggestions component. When search is initiated two additional components are rendered: weekly forecast card + detailed weather info on specific time. Forecast card component renders seperate Weather card (block) components.
+    Calendar component initially shows only search card and suggestions component. When search is initiated two additional components are rendered: weekly forecast card + detailed weather info on specific time.
+
+    Forecast card component lists separate Weather card (block) components.
 
 5.  **TODO**
 

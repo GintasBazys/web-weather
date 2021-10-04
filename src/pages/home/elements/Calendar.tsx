@@ -68,7 +68,7 @@ const Calendar = () => {
   };
 
   return (
-    <FlexWrapper flexDirection="row">
+    <FlexWrapper flexDirection={isTablet ? "column" : "row"}>
       <CardContainer
         height="40.875rem"
         background={`${blue} 0% 0% no-repeat padding-box`}

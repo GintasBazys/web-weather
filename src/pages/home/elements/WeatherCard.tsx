@@ -3,6 +3,7 @@ import { FlexWrapper, Image, TextWrapper } from "components";
 
 import styled from "styled-components";
 import { grey, lightGrey } from "utils/colors";
+import { useQuery } from "utils/breakpoints";
 interface Props {
   data: any;
   onClick: () => void;
@@ -10,10 +11,16 @@ interface Props {
 }
 
 const WeatherCard: React.FC<Props> = ({ data, onClick, isSelected }) => {
+  const { isTablet } = useQuery();
+
   if (typeof data === "string") {
     return (
       <>
-        <FlexWrapper margin="2.5rem 0" flexDirection="column" onClick={onClick}>
+        <FlexWrapper
+          margin={isTablet ? "1rem 0" : "2.5rem 0"}
+          flexDirection={isTablet ? "row" : "column"}
+          onClick={onClick}
+        >
           <TextWrapper color={grey}>NA</TextWrapper>
         </FlexWrapper>
       </>
@@ -21,10 +28,24 @@ const WeatherCard: React.FC<Props> = ({ data, onClick, isSelected }) => {
   } else {
     return (
       <>
-        <FlexWrapper flexDirection="column" onClick={onClick}>
-          <FlexWrapper flexDirection="column" justifyContent="center">
+        <FlexWrapper
+          flexDirection={isTablet ? "row" : "column"}
+          onClick={onClick}
+        >
+          <FlexWrapper
+            flexDirection={isTablet ? "row" : "column"}
+            justifyContent={isTablet ? "" : "center"}
+            margin={isTablet ? "1rem 0" : ""}
+          >
+            {isTablet ? (
+              <TextWrapper margin="0.625rem 0.625rem 0 0">
+                {data.forecastTimeUtc.slice(11, 16)}
+              </TextWrapper>
+            ) : (
+              ""
+            )}
             <Image width="2.375rem" height="2.5rem" src={data.conditionCode} />
-            <FlexWrapper>
+            <FlexWrapper margin={isTablet ? "0 0.625rem" : ""}>
               <TextWrapper color={lightGrey} fontSize="1.563rem">
                 {Math.round(data.airTemperature)}
               </TextWrapper>
@@ -33,7 +54,12 @@ const WeatherCard: React.FC<Props> = ({ data, onClick, isSelected }) => {
               </TextWrapper>
             </FlexWrapper>
 
-            <FlexWrapper alignItems="baseline" margin="0.938rem -0.625rem 0">
+            <FlexWrapper
+              alignItems="baseline"
+              margin={
+                isTablet ? "0.5rem 0 0rem 0.625rem" : "0.938rem -0.625rem 0"
+              }
+            >
               <WindDirectionContainer>
                 <Image padding="0 1.25rem 0 0" src="wind-direction" />
               </WindDirectionContainer>
