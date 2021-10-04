@@ -4,6 +4,7 @@ import { FlexWrapper, Image, TextWrapper } from "components";
 import styled from "styled-components";
 import { grey, lightGrey } from "utils/colors";
 import { useQuery } from "utils/breakpoints";
+import { NIGHT_CONDITIONS } from "utils/NightConditions";
 interface Props {
   data: any;
   onClick: () => void;
@@ -26,6 +27,8 @@ const WeatherCard: React.FC<Props> = ({ data, onClick, isSelected }) => {
       </>
     );
   } else {
+    const hours = data.forecastTimeUtc.slice(11, 16);
+
     return (
       <>
         <FlexWrapper
@@ -38,13 +41,26 @@ const WeatherCard: React.FC<Props> = ({ data, onClick, isSelected }) => {
             margin={isTablet ? "1rem 0" : ""}
           >
             {isTablet ? (
-              <TextWrapper margin="0.625rem 0.625rem 0 0">
-                {data.forecastTimeUtc.slice(11, 16)}
-              </TextWrapper>
+              <TextWrapper margin="0.625rem 0.625rem 0 0">{hours}</TextWrapper>
             ) : (
               ""
             )}
-            <Image width="2.375rem" height="2.5rem" src={data.conditionCode} />
+            {hours === "22:00" ||
+            (hours === "02:00" &&
+              NIGHT_CONDITIONS.includes(data.conditionCode)) ? (
+              <Image
+                width="2.375rem"
+                height="2.5rem"
+                src={`${data.conditionCode}_night`}
+              />
+            ) : (
+              <Image
+                width="2.375rem"
+                height="2.5rem"
+                src={data.conditionCode}
+              />
+            )}
+
             <FlexWrapper margin={isTablet ? "0 0.625rem" : ""}>
               <TextWrapper color={lightGrey} fontSize="1.563rem">
                 {Math.round(data.airTemperature)}

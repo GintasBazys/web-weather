@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FlexWrapper, GridWrapper, Image, TextWrapper } from "components";
 import { DAYS } from "utils/times";
 import { white } from "utils/colors";
+import { NIGHT_CONDITIONS } from "utils/NightConditions";
 import { useQuery } from "utils/breakpoints";
 
 const WeatherInfo = ({ currentWeather, isNow }: any) => {
@@ -19,6 +20,7 @@ const WeatherInfo = ({ currentWeather, isNow }: any) => {
       : currentWeather.forecastTimeUtc.split(" "); //date added to avoid undefined error
 
   const day = new Date(dateAndTime[0]).getDay();
+
   if (weatherType === "string") {
     return (
       <>
@@ -30,6 +32,8 @@ const WeatherInfo = ({ currentWeather, isNow }: any) => {
       </>
     );
   } else {
+    const hours = dateAndTime[1].substring(0, 5);
+
     return (
       <>
         <FlexWrapper
@@ -41,11 +45,21 @@ const WeatherInfo = ({ currentWeather, isNow }: any) => {
           }
         >
           <FlexWrapper>
-            <Image
-              width="5.063rem"
-              height="5.313rem"
-              src={`${currentWeather.conditionCode}_white`}
-            />
+            {hours === "22:00" ||
+            (hours === "02:00" &&
+              NIGHT_CONDITIONS.includes(currentWeather.conditionCode)) ? (
+              <Image
+                width="5.063rem"
+                height="5.313rem"
+                src={`${currentWeather.conditionCode}_white_night`}
+              />
+            ) : (
+              <Image
+                width="5.063rem"
+                height="5.313rem"
+                src={`${currentWeather.conditionCode}_white`}
+              />
+            )}
             <FlexWrapper margin="-1rem 0.625rem 0.625rem">
               <TextWrapper color={white} fontSize="4.313rem">
                 {Math.round(currentWeather.airTemperature)}
@@ -65,7 +79,7 @@ const WeatherInfo = ({ currentWeather, isNow }: any) => {
           ) : day === new Date().getDay() ? (
             <div>
               <TextWrapper fontSize="1.563rem" color={white}>
-                {dateAndTime[1].substring(0, 5)} {currentWeather.conditionCode}
+                {hours} {currentWeather.conditionCode}
               </TextWrapper>
             </div>
           ) : (
@@ -74,7 +88,7 @@ const WeatherInfo = ({ currentWeather, isNow }: any) => {
                 {DAYS[day]}
               </TextWrapper>
               <TextWrapper fontSize="1.563rem" color={white}>
-                {dateAndTime[1].substring(0, 5)} {currentWeather.conditionCode}
+                {hours} {currentWeather.conditionCode}
               </TextWrapper>
             </div>
           )}

@@ -4,9 +4,10 @@ import { lightWhite } from "utils/colors";
 import WeatherCard from "./WeatherCard";
 import styled from "styled-components";
 import { DAYS } from "utils/times";
+import { useQuery } from "utils/breakpoints";
 
 interface Props {
-  handleSelect: () => void;
+  handleSelect: (index: number, data: any) => void;
   fullDaysArray: Array<any>;
   selectedKey: any;
   daysArray: Array<number>;
@@ -18,7 +19,8 @@ const WeeklyForecastMobile: React.FC<Props> = ({
   selectedKey,
   daysArray,
 }) => {
-  console.log(daysArray);
+  const { isTablet } = useQuery();
+
   return (
     <>
       {fullDaysArray.length > 0 &&
@@ -27,7 +29,7 @@ const WeeklyForecastMobile: React.FC<Props> = ({
             <>
               <CalendarBox>
                 <FlexWrapper
-                  margin="0 4.875rem"
+                  margin={isTablet ? "" : "0 4.875rem"}
                   cursor="pointer"
                   position="relative"
                 >

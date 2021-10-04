@@ -5,9 +5,9 @@ import {
   CardContainer,
   TextWrapper,
   SearchStyleWrapper,
+  postLocation,
 } from "components";
 import styled from "styled-components";
-import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
 import ForecastCard from "./ForecastCard";
 import { white, blue } from "utils/colors";
@@ -35,21 +35,16 @@ const Calendar = () => {
     setSuggestions(suggestionArray);
   };
 
-  const showCalendar = () => {
-    axios
-      .post("http://www.localhost:3000/weather", {
-        location: searchInput,
-      })
-      .then((r) => {
-        if (r.data.success) {
-          setForecastData(r.data.weather_data.forecastTimestamps);
-          setCurrentWeather(r.data.weather_data.forecastTimestamps[0]);
-          setIsQueryShown(true);
-        } else {
-          alert("No search results");
-        }
-      });
-    return;
+  const showCalendar = async () => {
+    const result = await postLocation(searchInput);
+
+    if (result?.data.success) {
+      setForecastData(result?.data.weather_data.forecastTimestamps);
+      setCurrentWeather(result?.data.weather_data.forecastTimestamps[0]);
+      setIsQueryShown(true);
+    } else {
+      alert("No search results");
+    }
   };
 
   const getCurrentWeather = (childData: string) => {
@@ -105,7 +100,7 @@ const Calendar = () => {
           top={isTablet ? "7.5rem" : "12.5rem"}
           left={isTablet ? "20rem" : "22.5rem"}
         >
-          <Image src="search_icon" onClick={showCalendar} />
+          <Image src="search_icon" onClick={() => showCalendar()} />
         </SearchStyleWrapper>
         {isQueryShown && currentWeather ? (
           <WeatherInfo
@@ -140,7 +135,7 @@ const Input = styled.input.attrs({
   background: ${white};
   border-radius: 1.25rem;
   border: none;
-  margin: 1.75rem 1.563rem 0 1.188rem; //1.75 0
+  margin: 1.75rem 1.563rem 0 1.188rem;
   position: relative;
   padding: 1rem 1rem;
   :focus {

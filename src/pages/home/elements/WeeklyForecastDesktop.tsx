@@ -9,7 +9,7 @@ interface Props {
   monthsArray: Array<number>;
   daysArray: Array<number>;
   selectedKey: any;
-  handleSelect: () => void;
+  handleSelect: (index: number, data: any) => void;
   fullDaysArray: Array<any>;
 }
 

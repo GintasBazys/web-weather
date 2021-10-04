@@ -6,3 +6,5 @@ export * from "./wrappers/TextWrapper";
 export * from "./wrappers/SearchStyleWrapper";
 
 export * from "./containers/CardContainer";
+
+export * from "./apis/PostRequests";
