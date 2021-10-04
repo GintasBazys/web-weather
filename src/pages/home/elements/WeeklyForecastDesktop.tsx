@@ -42,14 +42,13 @@ const WeeklyForecastDesktop: React.FC<Props> = ({
             <FlexWrapper margin="13.75rem 0 0" flexDirection="column">
               {daysArray.slice(0, 7).map((day, idx) => {
                 return (
-                  <div>
+                  <div key={day}>
                     {idx === 0 ? (
-                      <TextWrapper key={day} fontSize="0.938rem" color={grey}>
+                      <TextWrapper fontSize="0.938rem" color={grey}>
                         Today
                       </TextWrapper>
                     ) : (
                       <TextWrapper
-                        key={day}
                         margin="12rem 0 0"
                         fontSize="0.938rem"
                         color={grey}
@@ -81,7 +80,7 @@ const WeeklyForecastDesktop: React.FC<Props> = ({
               {fullDaysArray.length > 0 &&
                 fullDaysArray.map((data, index) => {
                   return (
-                    <CalendarBox>
+                    <CalendarBox key={index}>
                       <FlexWrapper
                         justifyContent="center"
                         alignItems="center"
@@ -118,7 +117,7 @@ const WeeklyForecastDesktop: React.FC<Props> = ({
   );
 };
 
-export default WeeklyForecastDesktop;
+export default React.memo(WeeklyForecastDesktop);
 
 const ForecastcardContainer = styled.div`
   border: 0.063rem solid ${lightWhite};

@@ -34,7 +34,7 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
   useEffect(() => {
     const thisDay = new Date();
     const daysArray = [];
-    const formatedDays = [];
+    const formatedDays: any = [];
     for (let i = 1; i < 7; i++) {
       thisDay.setDate(thisDay.getDate() + 1);
       daysArray.push(thisDay.getDay()); //0-7
@@ -47,7 +47,7 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
 
     const availableTimes = forecastData.filter(
       (data: { forecastTimeUtc: string }) =>
-        TIMES.includes(data?.forecastTimeUtc?.split(" ").pop()) //filter fata that only contains specified time
+        TIMES.includes(data?.forecastTimeUtc?.split(" ").pop()) //filter data that only contains specified time
     );
 
     setMonthsArray([
@@ -56,7 +56,7 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
     ]); //starting date month; last day month
 
     //fullDaysArray - all possible week's values
-    formatedDays.map((day) => {
+    formatedDays.map((day: string) => {
       TIMES.map((time) => {
         fullDaysArray.push(`${day} ${time}`);
       });
@@ -94,4 +94,4 @@ const ForecastCard: React.FC<Props> = ({ forecastData, getCurrentWeather }) => {
     </>
   );
 };
-export default ForecastCard;
+export default React.memo(ForecastCard);

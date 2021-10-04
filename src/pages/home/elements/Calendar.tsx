@@ -19,7 +19,7 @@ const Calendar = () => {
   const [currentWeather, setCurrentWeather] = useState<any>(null);
   const [isQueryShown, setIsQueryShown] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState<string>("");
-  const [forecastData, setForecastData] = useState([]);
+  const [forecastData, setForecastData] = useState<any>([]);
   const [suggestions, setSuggestions] = useState<Array<string>>([]);
 
   const { isTablet } = useQuery();
@@ -100,7 +100,7 @@ const Calendar = () => {
           top={isTablet ? "7.5rem" : "12.5rem"}
           left={isTablet ? "20rem" : "22.5rem"}
         >
-          <Image src="search_icon" onClick={() => showCalendar()} />
+          <Image src="search_icon" onClick={showCalendar} />
         </SearchStyleWrapper>
         {isQueryShown && currentWeather ? (
           <WeatherInfo

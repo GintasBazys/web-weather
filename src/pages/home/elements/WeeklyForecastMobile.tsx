@@ -58,4 +58,4 @@ const CalendarBox = styled.div`
   justify-content: center;
 `;
 
-export default WeeklyForecastMobile;
+export default React.memo(WeeklyForecastMobile);

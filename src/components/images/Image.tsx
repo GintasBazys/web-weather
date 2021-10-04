@@ -24,6 +24,7 @@ const Img = styled.img<Styles>`
 
 interface Props extends Styles {
   src: string;
+  onClick?: () => void;
 }
 
 export const Image: React.FC<Props> = ({ src, ...rest }) => {

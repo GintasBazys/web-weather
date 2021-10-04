@@ -51,7 +51,7 @@
 
 5.  **TODO**
 
-    1. More responsive web design: mobile, autocomplete field, more breakpoints.
+    1. More responsive web design: mobile, autocomplete field, more breakpoints, loading indicator.
     2. Fix Typescript errors.
     3. Refactor ForecastCard component (API data, current weather handling).
     4. UTC to local Lithuania time (+3 hours).

@@ -9,7 +9,7 @@ import moderate_rain from "assets/icons/moderate_rain.svg";
 import moderate_snow from "assets/icons/moderate_snow.svg";
 import overcast from "assets/icons/overcast.svg";
 import scattered_clouds from "assets/icons/scattered_clouds.svg";
-import _night from "assets/icons/scattered_clouds_night.svg";
+import scattered_clouds_night from "assets/icons/scattered_clouds_night.svg";
 
 import sleet_white from "assets/icons/sleet_white.svg";
 import clear_white from "assets/icons/clear_white.svg";
@@ -44,7 +44,7 @@ export const images: Record<string, string> = {
   "moderate-snow": moderate_snow,
   overcast: overcast,
   "scattered-clouds": scattered_clouds,
-  "scattered-clouds_night": scattered_clouds_white_night,
+  "scattered-clouds_night": scattered_clouds_night,
   sleet_white: sleet_white,
   clear_white: clear_white,
   clear_white_night: clear_white_night,
