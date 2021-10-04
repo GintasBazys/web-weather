@@ -35,6 +35,21 @@
 
     <b>Website will be accessible on localhost: 8000; Express server uses port 3000;</b>
 
-## Without running server, data will not be received
+## Without running server, data will not be received.
 
-3.  Technologies used: <b>React, Gatsby, Typescript, Express, Node.js, Styled Components, RestAPI (Axios)</b>
+3.  Technologies used: <b>React, Gatsby, Typescript, Express, Node.js, Styled Components, Prettier, Git VCS, Rest API (Axios)</b>
+
+4.  **Project structure.**
+
+    Two sections: header and main content components.
+
+    Main content component has initial calendar component.
+
+    Calendar component renders search card and suggestions component. When search is initiated two additional components are rendered: weekly forecast card + detailed weather info on specific time. Forecast card component renders seperate Weather card (block) components.
+
+5.  **TODO**
+
+    1. More responsive web design: mobile, autocomplete field, more breakpoints.
+    2. Fix Typescript errors.
+    3. Refactor ForecastCard component (API data, current weather handling).
+    4. UTC to local Lithuania time (+3 hours).

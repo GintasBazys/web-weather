@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { FlexWrapper, Image, CardContainer } from "components";
+import {
+  FlexWrapper,
+  Image,
+  CardContainer,
+  TextWrapper,
+  SearchStyleWrapper,
+} from "components";
 import styled from "styled-components";
 import axios from "axios";
 import WeatherInfo from "./WeatherInfo";
@@ -70,6 +76,18 @@ const Calendar = () => {
         borderRadius={isTablet ? "" : "1rem"}
         margin={isTablet ? "" : "1.938rem 2.75rem 0"}
       >
+        {isTablet ? (
+          <TextWrapper
+            margin="2.063rem 1.5rem 0"
+            fontWeight="900"
+            fontSize="2.188rem"
+            color={white}
+          >
+            weather
+          </TextWrapper>
+        ) : (
+          ""
+        )}
         <Input
           value={searchInput}
           onKeyPress={handleKeyPress}
@@ -83,9 +101,12 @@ const Calendar = () => {
         ) : (
           ""
         )}
-        <SearchStyle>
+        <SearchStyleWrapper
+          top={isTablet ? "7.5rem" : "12.5rem"}
+          left={isTablet ? "20rem" : "22.5rem"}
+        >
           <Image src="search_icon" onClick={showCalendar} />
-        </SearchStyle>
+        </SearchStyleWrapper>
         {isQueryShown && currentWeather ? (
           <WeatherInfo
             currentWeather={currentWeather}
@@ -111,14 +132,6 @@ const Calendar = () => {
 
 export default Calendar;
 
-const SearchStyle = styled.span`
-  filter: invert(58%) sepia(49%) saturate(545%) hue-rotate(172deg)
-    brightness(98%) contrast(93%);
-  position: absolute;
-  top: 12.5rem;
-  left: 22.5rem;
-`;
-
 const Input = styled.input.attrs({
   type: "text",
 })`
@@ -127,7 +140,7 @@ const Input = styled.input.attrs({
   background: ${white};
   border-radius: 1.25rem;
   border: none;
-  margin: 1.75rem 1.563rem 0 1.188rem;
+  margin: 1.75rem 1.563rem 0 1.188rem; //1.75 0
   position: relative;
   padding: 1rem 1rem;
   :focus {

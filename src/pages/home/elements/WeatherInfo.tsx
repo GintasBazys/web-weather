@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { FlexWrapper, GridWrapper, Image, TextWrapper } from "components";
-import styled from "styled-components";
 import { DAYS } from "utils/times";
 import { white } from "utils/colors";
+import { useQuery } from "utils/breakpoints";
 
 const WeatherInfo = ({ currentWeather, isNow }: any) => {
+  const { isTablet } = useQuery();
+
   const [weatherType, setWeatherType] = useState("");
   useEffect(() => {
     if (typeof currentWeather === "string") {
@@ -30,7 +32,14 @@ const WeatherInfo = ({ currentWeather, isNow }: any) => {
   } else {
     return (
       <>
-        <TemperatureBlock>
+        <FlexWrapper
+          flexDirection="column"
+          margin={
+            isTablet
+              ? "2.375rem 2.875rem 2.813rem 1.5rem"
+              : "2.375rem 2.875rem 2.813rem 3.813rem"
+          }
+        >
           <FlexWrapper>
             <Image
               width="5.063rem"
@@ -69,8 +78,8 @@ const WeatherInfo = ({ currentWeather, isNow }: any) => {
               </TextWrapper>
             </div>
           )}
-        </TemperatureBlock>
-        <WeatherInfoBlock>
+        </FlexWrapper>
+        <FlexWrapper flexDirection="column" margin="0 0 0 3.75rem">
           <FlexWrapper flexDirection="column">
             <GridWrapper margin="0 0 1rem 0" columns={2}>
               <Image src="wind-speed" />
@@ -109,18 +118,10 @@ const WeatherInfo = ({ currentWeather, isNow }: any) => {
               </TextWrapper>
             </GridWrapper>
           </FlexWrapper>
-        </WeatherInfoBlock>
+        </FlexWrapper>
       </>
     );
   }
 };
 
 export default WeatherInfo;
-
-const TemperatureBlock = styled.div`
-  margin: 2.375rem 2.875rem 2.813rem 3.813rem;
-`;
-
-const WeatherInfoBlock = styled.div`
-  margin: 0 0 0 3.75rem;
-`;

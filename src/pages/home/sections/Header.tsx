@@ -9,7 +9,7 @@ const Header = () => {
       <FlexWrapper backgroundColor={white}>
         <TextWrapper
           margin="2.063rem 3.25rem 3.188rem"
-          fontWeight="900"
+          fontWeight="700"
           fontSize="2.188rem"
           color={blue}
         >
